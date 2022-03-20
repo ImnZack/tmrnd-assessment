@@ -1,0 +1,84 @@
+
+  <div class="demo-button-container">
+    <span class="spacer"></span>
+  </div>
+
+  <div class="container mat-elevation-z8">
+
+    <form [formGroup]="form">
+      <mat-form-field appearance="legacy">
+        <mat-label>Choose Date Range</mat-label>
+        <mat-label>Date Range</mat-label>
+        <mat-date-range-input [rangePicker]="rangeDatePicker" formGroupName="rangeDate">
+            <input matStartDate formControlName="startDate" placeholder="Start date" #dateRangeStart>
+            <input matEndDate formControlName="endDate" placeholder="End date"
+                (dateChange)="dateRangeChange(dateRangeStart, dateRangeEnd)" #dateRangeEnd>
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="rangeDatePicker"></mat-datepicker-toggle>
+        <mat-date-range-picker #rangeDatePicker>
+        </mat-date-range-picker>
+    
+        <mat-error *ngIf="form.get('rangeDate').get('startDate').hasError('matStartDateInvalid')">
+            Invalid start date.
+        </mat-error>
+        <mat-error *ngIf="form.get('rangeDate').get('endDate').hasError('matEndDateInvalid')">
+            Invalid end date.
+        </mat-error>
+        <mat-error
+            *ngIf="form.get('rangeDate').get('startDate').invalid || form.get('rangeDate').get('endDate').invalid">
+            Valid date required.
+        </mat-error>
+    </mat-form-field>
+    </form>
+  
+    <div class="form">
+      <mat-form-field floatPlaceholder="never" color="accent">
+        <input matInput #filter placeholder="Filter Status">
+      </mat-form-field>
+    </div>
+  
+    <mat-table table [dataSource]="dataSource" matSort class="mat-cell">
+      ng update @angular/cli @angular/core
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+  
+      <!-- ID Column -->
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+        <mat-cell *matCellDef="let row" >{{row.id}}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="dateTimeString">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Datetime</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.dateTimeString}}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="remark">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Remark</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.remark}}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="duration">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Duration</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{calculateDiff(row.duration)}}</mat-cell>
+      </ng-container>
+
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <ng-template [ngIf]="totalRows === 0">
+      <div style="padding-left:10px" mat-footer-row>No records found.</div>
+    </ng-template>
+  
+  
+    <mat-paginator #paginator
+                   [length]="dataSource.filteredData.length"
+                   [pageIndex]="0"
+                   [pageSize]="5"
+                   [pageSizeOptions]="[5, 10, 25, 100]">
+    </mat-paginator>
+  </div>
+  
+  <a routerLink="/" class="goback" mat-raised-button >Product List</a>

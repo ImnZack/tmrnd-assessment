@@ -1,0 +1,19 @@
+<mat-card *ngIf="!isAuthenticated">
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="form.valid && onSubmit()" novalidate>
+        <h2>Log In</h2>
+        <mat-error 
+        *ngIf="isLoginFailed" class="error">{{ errorMessage }}>
+        </mat-error>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Username" formControlName="username" required>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput type="password" placeholder="Password" formControlName="password" required>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">Login</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
